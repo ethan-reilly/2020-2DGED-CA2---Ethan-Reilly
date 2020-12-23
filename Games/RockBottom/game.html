@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <title>Rock Bottom</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+    
+    <div id="parent_container">
+        <div id="main_game" style="display: block;">
+            <div id="ui_score" style="display: none;">Score</div>
+            <div id="ui_health" style="display: none;">Health:</div>
+            <div id="ui_countdown" style="display: none;"">GO GO GO</div>
+
+            <div id="ui_pickup-value">20</div>
+            <canvas id="main_canvas" width="1024" height="768"></canvas>
+        </div>
+                <div id="menu_opening" style="display: block;">
+            <div id="ui_text">Press Enter</div>
+        </div>
+        <div id="menu_winlose" style="display: none;">
+            <div id="ui_text" >You Won!</div>
+        </div>
+    </div>
+
+      <!-- https://codepen.io/Callum-Martin/pen/aWpdGw -->
+      <svg viewbox="-10 0 115 30">
+          <defs>
+            <linearGradient id="gradient">
+              <stop color="#000"/>
+            </linearGradient>
+            <pattern id="wave" x="0.6" y="-0.7" width="100%" height="100%" patternUnits="userSpaceOnUse">
+              <path id="wavePath" d="M-40 9 Q-30 7 -20 9 T0 9 T20 9 T40 9 T60 9 T80 9 T100 9 T120 9 V20 H-40z" mask="url(#mask)" fill="url(#gradient)"> 
+                <animateTransform
+                    attributeName="transform"
+                    begin="0s"
+                    dur="2s"
+                    type="translate"
+                    from="0,0"
+                    to="40,0"
+                    repeatCount="indefinite" />
+              </path>
+            </pattern>
+          </defs>
+          <text text-anchor="middle" x="50" y="15" font-size="17" fill="red" fill-opacity="0.5">Rock Bottom</text>
+          <text text-anchor="middle" x="50" y="15" font-size="17" fill="url(#wave)"  fill-opacity="1">Rock Bottom</text>
+    <!---------------------------- Assets ---------------------------->
+    <!-- Load the audio assets -->
+    <!-- NAME, URL, ACCESSED DEC 2020-->
+    <audio preload="auto" id="background" src="assets/sounds/background_music.mp3"></audio>
+    <audio preload="auto" id="coin" src="assets/sounds/coin.wav"></audio>
+    <audio preload="auto" id="gunshot" src="assets/sounds/gunshot.wav"></audio>
+    <audio preload="auto" id="hit" src="assets/sounds/hit.wav"></audio>
+    <audio preload="auto" id="lose" src="assets/sounds/lose.wav"></audio>
+    <audio preload="auto" id="win" src="assets/sounds/win.wav"></audio>
+
+    <!-- Load the texture assets -->
+    <!-- NAME, URL, ACCESSED DEC 2020-->
+    <img id="spritesheet_main" src="assets/images/spritesheet_main.png" style="display: none" />
+    <img id="spritesheet_jungle" src="assets/images/terrain/spritesheet_jungle.png" style="display: none" />
+
+    <img id ="spritesheet_coin" src="assets/images/pickup/coin.png" style="display: none" />
+
+    <img id="far" src="assets/images/background/far.png" style="display: none" />
+    <img id="foreground" src="assets/images/background/foregound.png" style="display: none" />
+    <img id="sand" src="assets/images/background/sand.png" style="display: none" />
+
+    <!---------------------------- Engine ---------------------------->
+
+    <!-- JS files are included in the order of dependency -->
+    <script src="../../Engine/Types/Rect.js"></script>
+    <script src="../../Engine/Types/Vector2.js"></script>
+    <script src="../../Engine/Types/Transform2D.js"></script>
+    <script src="../../Engine/Constants/Constants.js"></script>
+    <script src="../../Engine/Time/GameTime.js"></script>
+    <script src="../../Engine/Utilities/GDUtilities.js"></script>
+
+    <script src="../../Engine/Controllers/Controller.js"></script>
+  
+    <script src="../../Engine/Actors/Actor2D.js"></script>
+    <script src="../../Engine/Artists/Artist.js"></script>
+    <script src="../../Engine/Artists/SpriteArtist.js"></script>
+    <script src="../../Engine/Artists/AnimatedSpriteArtist.js"></script>
+    <script src="../../Engine/Actors/Sprite.js"></script>
+
+    <script src="../../Engine/Managers/KeyboardManager.js"></script>
+    <script src="../../Engine/Managers/SoundManager.js"></script>
+    <script src="../../Engine/Managers/ObjectManager.js"></script>
+
+    <script src="../../Engine/Dictionary/AssetDictionary.js"></script>
+
+    <!-------------------------- Game-specific -------------------------->
+
+    <!-- JS files are included in the order of dependency -->
+    <script src="js/Constants/GameConstants.js"></script>
+    <script src="js/Controllers/BulletController.js"></script>
+    <script src="js/game.js"></script>
+</body>
+
+</html>

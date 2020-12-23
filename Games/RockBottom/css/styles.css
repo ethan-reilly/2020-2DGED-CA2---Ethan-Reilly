@@ -1,0 +1,164 @@
+/*********************** Containers ****************************/
+
+/*
+* See Margin - https://www.w3schools.com/css/css_margin.asp
+* See Position - https://www.w3schools.com/css/css_positioning.asp
+*/
+#parent_container {
+  position: relative;
+  width: 1024;
+  height:  768;
+  margin: auto;
+}
+
+/*********************** Canvas ****************************/
+
+canvas {
+  position: absolute;
+  border: 3px solid black;
+  width: 1024;
+  height:  768;
+  z-index: 1;
+}
+
+svg{
+  position: absolute;
+  left: 33%;
+  font-weight:bold;
+  max-width:600px;
+  height:20%;
+  font-family: "8bit";
+  /* background-color: red; */
+  border-bottom: 3px solid black;
+  z-index: 0;
+}
+
+/*********************** Fonts ****************************/
+@font-face {
+  font-family: "8bit";
+  src: url("../assets/fonts/8bit.ttf")
+      format("truetype")
+}
+
+/*********************** UI Text ****************************/
+/* .ui#toast,
+.ui#health,
+.ui#score  */
+#menu_opening,
+#ui_countdown,
+#menu_winlose,
+#ui_score,
+#ui_health
+{
+  position: absolute;
+  font-family: "8bit";
+  letter-spacing: 1px;
+  font-size: 50px;
+  color:rgb(155, 1, 109);
+  text-shadow: 3px 1px rgb(255, 0, 0);
+  text-align: center;
+  z-index: 2;
+}
+
+/* .ui#countdown */
+#ui_countdown
+{
+  position: absolute;
+  font-family: "8bit";
+  letter-spacing: 1px;
+  font-size: 50px;
+  color:  rgb(155, 1, 109);
+  text-shadow: 3px 1px rgb(255, 0, 0);
+  text-align: center;
+  z-index: 2;
+}
+
+#ui_score{
+  top:20px;
+  left:30px;
+}
+
+#ui_health{
+  right:20px;
+  top:20px;
+}
+
+#menu_opening{
+  margin-left: 312px;
+margin-top: 364px;
+width: 400px;
+height: 40px;
+font-size: 32px;
+border: 1px solid black;
+text-align: center;
+display: block;
+}
+
+#ui_countdown { 
+  margin-left: 312px;
+  margin-top: 364px;
+  width: 400px;
+  height: 40px;
+  font-size: 18px;
+  display: none;
+
+  animation-name: expandfade;
+  animation-duration: 3s;
+  animation-timing-function: ease-in-out; 
+  animation-delay: 0s;
+  animation-play-state: running;
+  animation-direction: normal; 
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes expandfade {
+  0% {
+    transform: scale(3);
+    opacity: 1;
+  }
+
+
+  50% {
+    transform: scale(6) rotate(720deg);
+  }
+
+  100% {
+    transform: scale(3) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/*********************** UI Pickups ****************************/
+
+#ui_pickup-value{
+font-family: "8bit";
+position: absolute;
+top: 70px;
+left: 245px;
+color: rgb(255, 0, 0);
+text-shadow: 2px 2px rgb(155, 1, 109);
+font-size: 30px;
+z-index: 3;
+
+animation-name: fade-out-and-float-up;
+animation-duration: 1s;
+animation-timing-function: ease-in-out;         
+animation-delay: 0s;
+animation-direction: normal;                     
+animation-iteration-count: 1;
+animation-fill-mode: forwards;                   
+}
+
+/*https://css-tricks.com/almanac/properties/t/transform/*/
+@keyframes  fade-out-and-float-up {
+0% { 
+ opacity: 1;
+ transform: scale(1) translate(0px, 0px);
+}
+
+100% {
+ opacity: 0;
+ transform: scale(0.1) translate(0px, -120px);
+}
+}
