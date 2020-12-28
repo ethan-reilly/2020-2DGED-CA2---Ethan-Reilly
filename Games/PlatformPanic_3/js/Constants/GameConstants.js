@@ -9,7 +9,7 @@ class SpriteData {
 static RUNNER_START_POSITION = new Vector2(100, 575);
 static RUNNER_MOVE_KEYS = [Keys.A, Keys.D, Keys.Space, Keys.Enter];
 static RUNNER_RUN_VELOCITY = 0.1;
-static RUNNER_JUMP_VELOCITY = 0.6;
+static RUNNER_JUMP_VELOCITY = 6;
 
 static RUNNER_ANIMATION_DATA = Object.freeze({
   id: "runner_animation_data",

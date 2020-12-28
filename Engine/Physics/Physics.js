@@ -11,6 +11,7 @@ const FrictionType = Object.freeze({
 });
 const GravityType = Object.freeze({
     Off: 0,
+    UnderWater: 0.05,
     Weak: 0.2,
     Normal: 0.4,
     Strong: 0.7

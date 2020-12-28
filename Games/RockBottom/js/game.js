@@ -19,8 +19,21 @@ var objectManager = null;
 var soundManager = null;
 var keyboardManager = null;
 
+//debug
+var debugDrawer = null;
+
 //#endregion
 
+
+function LoadDebug(bDebugEnabled) {
+  if (bDebugEnabled)
+    debugDrawer = new DebugDrawer(
+      "shows debug info",
+      StatusType.Update | StatusType.Drawn,
+      ctx,
+      objectManager
+    );
+}
 //#region Functions
 
 //#region Start & Animate
@@ -80,6 +93,8 @@ function Draw(gameTime) {
 
   //call object manager to draw all sprites
   objectManager.Draw(gameTime);
+
+  if (debugDrawer) debugDrawer.Draw(gameTime);
 }
 
 function ClearCanvas(color) {
@@ -97,10 +112,10 @@ function ClearCanvas(color) {
 //stores object manager which holds all sprites
 
 const cueArray = [
-  new AudioCue("coin", 1, 1, false, 1),
+  new AudioCue("coin_pickup", 1, 1, false, 0),
   new AudioCue("win", 1, 1, false, 1),
   new AudioCue("gunshot", 1, 1, false, 0),
-  new AudioCue("background", 1, 1, true, 0),
+  new AudioCue("music", 1, 1, true, 0),
   new AudioCue("win", 1, 1, false, 0),
   new AudioCue("lose", 1, 1, false, 0),
   //add more cues here but make sure you load in the HTML!
@@ -111,6 +126,8 @@ var score = 0;
 //#endregion
 
 function Initialize() {
+  //debug drawer to show bounding rect or circle around collidable sprites
+  LoadDebug(true);
 
   //load sprites
   LoadSprites();
@@ -150,6 +167,9 @@ function StartGame(gameTime){
   scoreElement.style.display = "block";
   scoreElement.innerHTML = "Score: " + score;
 
+  var countdown = document.getElementById("ui_countdown");
+  countdown.style.display = "block";
+
   //Hide "Press Enter"
   document.getElementById("menu_opening").style.display = "none";
 
@@ -157,17 +177,61 @@ function StartGame(gameTime){
   objectManager.StatusType = StatusType.Drawn | StatusType.Updated;
 
   //play sound
-  soundManager.Play("background");
+  soundManager.Play("music");
 }
 
 function LoadSprites() {
   LoadPlayerSprite();
   LoadPlatformSprites();
   LoadBackgroundSprites();
+  LoadPickupSprites(); 
 
   //to do...
-  //LoadPickupSprites()
   //LoadEnemySprites();
+}
+
+function LoadPlatformSprites() {
+  //access the data
+  var platformData = SpriteData.PLATFORM_DATA;
+
+  //create tha artist
+  let spriteArtist = new SpriteArtist(
+    ctx,
+    platformData.spriteSheet,
+    platformData.alpha,
+    platformData.sourcePosition,
+    platformData.sourceDimensions
+  );
+
+  //create the transform
+  let transform = new Transform2D(
+    platformData.translationArray[0],
+    platformData.rotation,
+    platformData.scale,
+    platformData.origin,
+    platformData.sourceDimensions
+  );
+
+  //create a single archetypal platform sprite
+  let archetypeSprite = new Sprite(
+    platformData.id,
+    platformData.actorType,
+    StatusType.Updated | StatusType.Drawn,
+    transform,
+    spriteArtist
+  );
+
+  //now clone the archetype
+  let clone = null;
+  for (let i = 0; i < platformData.translationArray.length; i++) {
+    clone = archetypeSprite.Clone();
+    //set the position of the clone
+    clone.Transform2D.Translation = platformData.translationArray[i];
+    //dont forget - if its collidable then it needs a circle or rect collision primitive
+    clone.collisionPrimitive = new RectCollisionPrimitive(clone.Transform2D, 0);
+    //add to the manager
+    objectManager.Add(clone);
+  }
 }
 
 function LoadBackgroundSprites() {
@@ -202,42 +266,6 @@ function LoadBackgroundSprites() {
   }
 }
 
-function LoadPlatformSprites() {
-  var platformData = SpriteData.PLATFORM_DATA;
-
-  let spriteArtist = new SpriteArtist(
-    ctx,
-    platformData.spriteSheet,
-    platformData.alpha,
-    platformData.sourcePosition,
-    platformData.sourceDimensions
-  );
-
-  let transform = new Transform2D(
-    platformData.translationArray[0],
-    platformData.rotation,
-    platformData.scale,
-    platformData.origin,
-    platformData.sourceDimensions
-  );
-
-  let platformSprite = new Sprite(
-    platformData.id,
-    platformData.actorType,
-    StatusType.Updated | StatusType.Drawn,
-    transform,
-    spriteArtist
-  );
-
-  let clone = null;
-
-  for (let i = 0; i < platformData.translationArray.length; i++) {
-    clone = platformSprite.Clone();
-    clone.Transform2D.Translation = platformData.translationArray[i];
-    objectManager.Add(clone);
-  }
-}
-
 function LoadPlayerSprite() {
   //step 1 - create AnimatedSpriteArtist
   var takeName = "run_right";
@@ -247,29 +275,49 @@ function LoadPlayerSprite() {
   artist.SetTake(takeName);
 
   //step 3 - create transform and use bounding box from initial take (this is why we make AnimatedSpriteArtist before Transform2D)
-  var transform2D = new Transform2D(
-    new Vector2(100, 100), //position
-    GDMath.ToRadians(0), //rotation
-    new Vector2(1, 1), //scale
-    new Vector2(25, 27), //origin - roughly since each frame is different size
-    artist.GetSingleFrameDimensions(takeName) //bounding box taken from 1st frame of current take
+  let transform = new Transform2D(
+    SpriteData.RUNNER_START_POSITION,
+    0,
+    Vector2.One,
+    Vector2.Zero,
+    artist.GetSingleFrameDimensions("run_right"),
+    0
   );
 
-  //step 4 - create the Sprite
-  var sprite = new Sprite(
-    "player1", //a unique id that we could use to find sprite in ObjectManager
-    ActorType.Player, //a type that is used to group all same type in the same row of the 2D sprites array in ObjectManager
-    StatusType.Drawn | StatusType.Updated, //sets whether we draw AND update a Sprite
-    transform2D, //transform that positions the sprite
-    artist
-  ); //artist that draws the sprite
+  //step 4 - create the CollidableSprite which adds Body which allows us to test for collision and add gravity
+  let playerSprite = new CollidableSprite(
+    "player",
+    ActorType.Player,
+    StatusType.Updated | StatusType.Drawn,
+    transform,
+    artist,
+    1
+  );
 
-  //step 5(optional) - add any controller(s)
-  sprite.AttachController(new BulletController(new Vector2(1, 0), 5));
+  //step 5 - set performance characteristics of the body attached to the moveable sprite
+  playerSprite.Body.MaximumSpeed = 6;
+  playerSprite.Body.Friction = FrictionType.Normal;
+  playerSprite.Body.Gravity = GravityType.UnderWater;
 
-  //step 6 - add to the object manager so it is drawn (if we set StatusType.Drawn) and updated (if we set StatusType.Updated)
-  objectManager.Add(sprite); //add to the object manager
+  //step 6 - add collision surface
+  playerSprite.collisionPrimitive = new RectCollisionPrimitive(
+    playerSprite.Transform2D,
+    0
+  );
+
+  //step 7 - add movement controller
+  playerSprite.AttachController(
+    new PlayerController(
+      SpriteData.RUNNER_MOVE_KEYS,
+      SpriteData.RUNNER_RUN_VELOCITY,
+      SpriteData.RUNNER_JUMP_VELOCITY
+    )
+  );
+
+  //step 8 - add to the object manager so it is drawn (if we set StatusType.Drawn) and updated (if we set StatusType.Updated)
+  objectManager.Add(playerSprite); //add player sprite
 }
+
 
 function LoadPickupSprites() {
    //to add lots of pickups we can also just create a local array of positions for the pickups
@@ -310,7 +358,7 @@ function LoadPickupSprites() {
 
     //create the sprite and give it type "Pickup"
     let pickupSprite = new Sprite(
-      "gold",
+      "coin",
       ActorType.Pickup,
       StatusType.Updated | StatusType.Drawn,
       transform,

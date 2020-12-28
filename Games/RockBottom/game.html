@@ -48,8 +48,8 @@
     <!---------------------------- Assets ---------------------------->
     <!-- Load the audio assets -->
     <!-- NAME, URL, ACCESSED DEC 2020-->
-    <audio preload="auto" id="background" src="assets/sounds/background_music.mp3"></audio>
-    <audio preload="auto" id="coin" src="assets/sounds/coin.wav"></audio>
+    <audio preload="auto" id="music" src="assets/sounds/music.mp3"></audio>
+    <audio preload="auto" id="coin_pickup" src="assets/sounds/coin.wav"></audio>
     <audio preload="auto" id="gunshot" src="assets/sounds/gunshot.wav"></audio>
     <audio preload="auto" id="hit" src="assets/sounds/hit.wav"></audio>
     <audio preload="auto" id="lose" src="assets/sounds/lose.wav"></audio>
@@ -60,7 +60,10 @@
     <img id="spritesheet_main" src="assets/images/spritesheet_main.png" style="display: none" />
     <img id="spritesheet_jungle" src="assets/images/terrain/spritesheet_jungle.png" style="display: none" />
 
+    <img id="platform" src="assets/images/terrain/platform.png" style="display: none" />
     <img id ="spritesheet_coin" src="assets/images/pickup/coin.png" style="display: none" />
+    <img id ="diver" src="assets/sprite/diver.png" style="display: none" />
+    <img id ="spritesheet_chest" src="assets/images/pickup/chest.png" style="display: block" />
 
     <img id="far" src="assets/images/background/far.png" style="display: none" />
     <img id="foreground" src="assets/images/background/foregound.png" style="display: none" />
@@ -68,33 +71,36 @@
 
     <!---------------------------- Engine ---------------------------->
 
-    <!-- JS files are included in the order of dependency -->
-    <script src="../../Engine/Types/Rect.js"></script>
-    <script src="../../Engine/Types/Vector2.js"></script>
-    <script src="../../Engine/Types/Transform2D.js"></script>
-    <script src="../../Engine/Constants/Constants.js"></script>
-    <script src="../../Engine/Time/GameTime.js"></script>
-    <script src="../../Engine/Utilities/GDUtilities.js"></script>
-
-    <script src="../../Engine/Controllers/Controller.js"></script>
+      <!-- JS files are included in the order of dependency -->
+      <script src="../../Engine/Types/Rect.js"></script>
+      <script src="../../Engine/Types/Vector2.js"></script>
+      <script src="../../Engine/Types/Transform2D.js"></script>
+      <script src="../../Engine/Constants/Constants.js"></script>
+      <script src="../../Engine/Time/GameTime.js"></script>
+      <script src="../../Engine/Utilities/GDUtilities.js"></script>
+      <script src="../../Engine/Physics/Physics.js"></script> 
   
-    <script src="../../Engine/Actors/Actor2D.js"></script>
-    <script src="../../Engine/Artists/Artist.js"></script>
-    <script src="../../Engine/Artists/SpriteArtist.js"></script>
-    <script src="../../Engine/Artists/AnimatedSpriteArtist.js"></script>
-    <script src="../../Engine/Actors/Sprite.js"></script>
-
-    <script src="../../Engine/Managers/KeyboardManager.js"></script>
-    <script src="../../Engine/Managers/SoundManager.js"></script>
-    <script src="../../Engine/Managers/ObjectManager.js"></script>
-
-    <script src="../../Engine/Dictionary/AssetDictionary.js"></script>
+      <script src="../../Engine/Controllers/Controller.js"></script>
+    
+      <script src="../../Engine/Actors/Actor2D.js"></script>
+      <script src="../../Engine/Artists/Artist.js"></script>
+      <script src="../../Engine/Artists/SpriteArtist.js"></script>
+      <script src="../../Engine/Artists/AnimatedSpriteArtist.js"></script>
+      <script src="../../Engine/Actors/Sprite.js"></script>
+      <script src="../../Engine/Actors/CollidableSprite.js"></script>  
+  
+      <script src="../../Engine/Managers/KeyboardManager.js"></script>
+      <script src="../../Engine/Managers/SoundManager.js"></script>
+      <script src="../../Engine/Managers/ObjectManager.js"></script>
+  
+      <script src="../../Engine/Dictionary/AssetDictionary.js"></script>
 
     <!-------------------------- Game-specific -------------------------->
 
     <!-- JS files are included in the order of dependency -->
     <script src="js/Constants/GameConstants.js"></script>
     <script src="js/Controllers/BulletController.js"></script>
+    <script src="js/Controllers/PlayerController.js"></script>
     <script src="js/game.js"></script>
 </body>
 
