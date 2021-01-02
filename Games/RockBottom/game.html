@@ -10,10 +10,10 @@
     <div id="parent_container">
         <div id="main_game" style="display: block;">
             <div id="ui_score" style="display: none;">Score</div>
-            <div id="ui_health" style="display: none;">Health:</div>
+            <!-- <div id="ui_health" style="display: none;">Health:</div> -->
             <div id="ui_countdown" style="display: none;"">GO GO GO</div>
 
-            <div id="ui_pickup-value">20</div>
+            <div id="ui_pickup-value"  style= "display: none">10 </div>
             <canvas id="main_canvas" width="1024" height="768"></canvas>
         </div>
                 <div id="menu_opening" style="display: block;">
@@ -43,7 +43,7 @@
               </path>
             </pattern>
           </defs>
-          <text text-anchor="middle" x="50" y="15" font-size="17" fill="red" fill-opacity="0.5">Rock Bottom</text>
+          <text text-anchor="middle" x="50" y="15" font-size="17" fill="gray" fill-opacity="0.7">Rock Bottom</text>
           <text text-anchor="middle" x="50" y="15" font-size="17" fill="url(#wave)"  fill-opacity="1">Rock Bottom</text>
     <!---------------------------- Assets ---------------------------->
     <!-- Load the audio assets -->
@@ -99,7 +99,6 @@
 
     <!-- JS files are included in the order of dependency -->
     <script src="js/Constants/GameConstants.js"></script>
-    <script src="js/Controllers/BulletController.js"></script>
     <script src="js/Controllers/PlayerController.js"></script>
     <script src="js/game.js"></script>
 </body>

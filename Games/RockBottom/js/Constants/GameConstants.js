@@ -102,7 +102,10 @@ static COLLECTIBLES_CHEST = Object.freeze({
   scale: new Vector2(.75, .75),
   origin: new Vector2(0, 0),
   alpha: 1,
-  actorType: ActorType.Pickup
+  actorType: ActorType.Pickup,
+  translationArray:[
+    new Vector2(525, 40)
+  ]
 });
 
 static PLATFORM_DATA = Object.freeze({

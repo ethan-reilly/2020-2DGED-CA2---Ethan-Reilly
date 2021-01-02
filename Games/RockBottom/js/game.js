@@ -85,6 +85,9 @@ function Update(gameTime) {
 
   //Check for menu, win/lose, sound events
   HandleInput(gameTime);
+
+  //update scores on the UI
+  UpdateGameState(gameTime);
 }
 
 function Draw(gameTime) {
@@ -113,7 +116,6 @@ function ClearCanvas(color) {
 
 const cueArray = [
   new AudioCue("coin_pickup", 1, 1, false, 0),
-  new AudioCue("win", 1, 1, false, 1),
   new AudioCue("gunshot", 1, 1, false, 0),
   new AudioCue("music", 1, 1, true, 0),
   new AudioCue("win", 1, 1, false, 0),
@@ -121,7 +123,7 @@ const cueArray = [
   //add more cues here but make sure you load in the HTML!
 ];
 
-var health = 3;
+//var health = 3;
 var score = 0;
 //#endregion
 
@@ -132,6 +134,25 @@ function Initialize() {
   //load sprites
   LoadSprites();
 
+}
+
+function UpdateGameState(gameTime) {
+
+  //update UI with new score
+  var scoreElement = document.getElementById("ui_score");
+  if (scoreElement) {
+    scoreElement.style.display = "block";
+    scoreElement.innerHTML = "Score: " + score;
+  }
+
+
+  if (score > 60 ){
+    // var canvas = document.getElementById("parent_container");
+    // canvas.style.display = "none";
+    var message = document.getElementById("menu_winlose");
+    message.style.display = "block";
+  }
+  //if score == 100 then show "You Win! or if time exceeds 60000ms then "Time Up! You Lose!"
 }
 
 
@@ -158,10 +179,10 @@ function HandleInput(gameTime) {
 
 function StartGame(gameTime){
 
-  //set any win/lose variables
-  var healthElement = document.getElementById("ui_health");
-  healthElement.style.display = "block";
-  healthElement.innerHTML = "Health: " + health + "/3";
+  // //set any win/lose variables
+  // var healthElement = document.getElementById("ui_health");
+  // healthElement.style.display = "block";
+  // healthElement.innerHTML = "Health: " + health + "/3";
 
   var scoreElement = document.getElementById("ui_score");
   scoreElement.style.display = "block";
@@ -185,6 +206,7 @@ function LoadSprites() {
   LoadPlatformSprites();
   LoadBackgroundSprites();
   LoadPickupSprites(); 
+  LoadChestSprite();
 
   //to do...
   //LoadEnemySprites();
@@ -325,6 +347,9 @@ function LoadPickupSprites() {
     new Vector2(450, 525),
     new Vector2(525, 525),
     new Vector2(725, 425),
+    new Vector2(455, 325),
+    new Vector2(380, 325),
+    new Vector2(75, 175),
   ];
 
   //set the take name for the animation - we could change to "gold_glint" easily
@@ -380,6 +405,51 @@ function LoadPickupSprites() {
 function LoadEnemySprites() {
   //to do...
 }
+
+function LoadChestSprite(){
+//access the data
+var chestData = SpriteData.COLLECTIBLES_CHEST;
+
+//create tha artist
+let spriteArtist = new SpriteArtist(
+  ctx,
+  chestData.spriteSheet,
+  chestData.alpha,
+  chestData.sourcePosition,
+  chestData.sourceDimensions
+);
+
+//create the transform
+let transform = new Transform2D(
+  chestData.translationArray[0],
+  chestData.rotation,
+  chestData.scale,
+  chestData.origin,
+  chestData.sourceDimensions
+);
+
+//create a single archetypal platform sprite
+let archetypeSprite = new Sprite(
+  chestData.id,
+  chestData.actorType,
+  StatusType.Updated | StatusType.Drawn,
+  transform,
+  spriteArtist
+);
+
+//now clone the archetype
+let clone = null;
+for (let i = 0; i < chestData.translationArray.length; i++) {
+  clone = archetypeSprite.Clone();
+  //set the position of the clone
+  clone.Transform2D.Translation = chestData.translationArray[i];
+  //dont forget - if its collidable then it needs a circle or rect collision primitive
+  clone.collisionPrimitive = new RectCollisionPrimitive(clone.Transform2D, 0);
+  //add to the manager
+  objectManager.Add(clone);
+}
+}
+
 
 //#region DEMO - REMOVE LATER
 /***************************************DEMO FUNCTIONS ***************************************/
