@@ -115,16 +115,19 @@ function ClearCanvas(color) {
 //stores object manager which holds all sprites
 
 const cueArray = [
-  new AudioCue("coin_pickup", 1, 1, false, 0),
+  new AudioCue("coin_pickup", 1, 1, false, 1),
   new AudioCue("gunshot", 1, 1, false, 0),
-  new AudioCue("music", 1, 1, true, 0),
-  new AudioCue("win", 1, 1, false, 0),
+  new AudioCue("hit", 1, 1, false, 0),
   new AudioCue("lose", 1, 1, false, 0),
+  new AudioCue("win", 1, 1, false, 0),
+  new AudioCue("background", 1, 1, true, 0),
   //add more cues here but make sure you load in the HTML!
 ];
 
-//var health = 3;
+var health = 100;
+var hitCooldown = 0;
 var score = 0;
+var gameEnded = false;
 //#endregion
 
 function Initialize() {
@@ -133,24 +136,43 @@ function Initialize() {
 
   //load sprites
   LoadSprites();
-
 }
 
 function UpdateGameState(gameTime) {
 
-  //update UI with new score
-  var scoreElement = document.getElementById("ui_score");
-  if (scoreElement) {
-    scoreElement.style.display = "block";
-    scoreElement.innerHTML = "Score: " + score;
-  }
+  if(!gameEnded)
+  {
+    //update UI with new score
+    var scoreElement = document.getElementById("ui_score");
+    if (scoreElement) {
+      scoreElement.style.display = "block";
+      scoreElement.innerHTML = "Score: " + score;
+    }
 
+    var healthElement = document.getElementById("ui_health");
+    if (healthElement) {
+      healthElement.style.display = "block";
+      healthElement.innerHTML = "Health: " + health;
+    }
+  }
 
   if (score > 60 ){
     // var canvas = document.getElementById("parent_container");
     // canvas.style.display = "none";
     var message = document.getElementById("menu_winlose");
     message.style.display = "block";
+
+    gameEnded = true;
+  }
+
+  if (health <= 0 ){
+    health = 0;
+
+    var message = document.getElementById("menu_winlose");
+    message.innerHTML = "You Lose!";
+    message.style.display = "block";
+
+    gameEnded = true;
   }
   //if score == 100 then show "You Win! or if time exceeds 60000ms then "Time Up! You Lose!"
 }
@@ -180,9 +202,9 @@ function HandleInput(gameTime) {
 function StartGame(gameTime){
 
   // //set any win/lose variables
-  // var healthElement = document.getElementById("ui_health");
-  // healthElement.style.display = "block";
-  // healthElement.innerHTML = "Health: " + health + "/3";
+  var healthElement = document.getElementById("ui_health");
+  healthElement.style.display = "block";
+  healthElement.innerHTML = "Health: " + health ;
 
   var scoreElement = document.getElementById("ui_score");
   scoreElement.style.display = "block";
@@ -198,7 +220,7 @@ function StartGame(gameTime){
   objectManager.StatusType = StatusType.Drawn | StatusType.Updated;
 
   //play sound
-  soundManager.Play("music");
+  soundManager.Play("background");
 }
 
 function LoadSprites() {
@@ -207,9 +229,8 @@ function LoadSprites() {
   LoadBackgroundSprites();
   LoadPickupSprites(); 
   LoadChestSprite();
+  LoadEnemySprites();
 
-  //to do...
-  //LoadEnemySprites();
 }
 
 function LoadPlatformSprites() {
@@ -403,7 +424,53 @@ function LoadPickupSprites() {
 }
 
 function LoadEnemySprites() {
-  //to do...
+   //step 1 - create AnimatedSpriteArtist
+  var takeName = "fish_right";
+  var artist = new AnimatedSpriteArtist(ctx, SpriteData.ENEMY_ANIMATION_DATA);
+
+  //step 2 - set initial take
+  artist.SetTake(takeName);
+
+  //step 3 - create transform and use bounding box from initial take (this is why we make AnimatedSpriteArtist before Transform2D)
+  let transform = new Transform2D(
+    SpriteData.ENEMY_START_POSITION,
+    0,
+    Vector2.One,
+    Vector2.Zero,
+    artist.GetSingleFrameDimensions("fish_right"),
+    0
+  );
+
+  //step 4 - create the CollidableSprite which adds Body which allows us to test for collision and add gravity
+  let enemySprite = new CollidableSprite(
+    "enemy",
+    ActorType.Enemy,
+    StatusType.Updated | StatusType.Drawn,
+    transform,
+    artist,
+    1
+  );
+
+  //step 5 - set performance characteristics of the body attached to the moveable sprite
+  enemySprite.Body.MaximumSpeed = 3;
+  enemySprite.Body.Friction = FrictionType.Normal;
+  enemySprite.Body.Gravity = GravityType.UnderWater;
+
+  //step 6 - add collision surface
+  enemySprite.collisionPrimitive = new RectCollisionPrimitive(
+    enemySprite.Transform2D,
+    0
+  );
+
+  //step 7 - add movement controller
+  // enemySprite.AttachController(
+  //   new EnemyController(
+  //    
+  //   )
+  // );
+
+  //step 8 - add to the object manager so it is drawn (if we set StatusType.Drawn) and updated (if we set StatusType.Updated)
+  objectManager.Add(enemySprite); //add player sprite
 }
 
 function LoadChestSprite(){

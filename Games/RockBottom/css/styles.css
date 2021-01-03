@@ -77,14 +77,16 @@ svg{
 }
 
 #ui_score{
-  top:20px;
+  font-size: 30px;
+  top:50px;
   right:50px;
 }
 
-/* #ui_health{
-  right:20px;
-  top:20px;
-} */
+#ui_health{
+  font-size: 30px;
+  top:10px;
+  right:50px;
+}
 
 #menu_opening{
   margin-left: 312px;

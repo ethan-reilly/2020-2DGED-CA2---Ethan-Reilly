@@ -48,25 +48,74 @@ static RUNNER_ANIMATION_DATA = Object.freeze({
   }
 });
 
-// static ENEMY_ANIMATION_DATA = Object.freeze({
-//   id: "enemy_animation_data",
-//   spriteSheet: document.getElementById("spritesheet_main"),
-//   alpha: 1,
-//   takes: {  
-//     "wasp_fly" :  {    
-//       fps: 16,
-//       maxLoopCount: -1, //-1 = always, 0 = run once, N = run N times
-//       startCellIndex: 0,
-//       endCellIndex: 2,
-//       boundingBoxDimensions: new Vector2(35, 50), 
-//       cellData: [
-//         new Rect(20, 234, 35, 50),
-//         new Rect(90, 234, 35, 50),
-//         new Rect(160, 234, 35, 50)
-//       ]
-//     }
-//   }
-// });
+
+static ENEMY_START_POSITION = new Vector2(310, 340); 
+
+static ENEMY_ANIMATION_DATA = Object.freeze({
+  id: "enemy_animation_data",
+  spriteSheet: document.getElementById("fish"),
+  alpha: 1,
+  takes: {  
+    "fish_left" :  {    
+      fps: 16,
+      maxLoopCount: -1, //-1 = always, 0 = run once, N = run N times
+      startCellIndex: 0,
+      endCellIndex: 19,
+      boundingBoxDimensions: new Vector2(72, 54), 
+      cellData: [
+        new Rect(0, 0, 72, 54),
+        new Rect(72, 0, 72, 54),
+        new Rect(144, 0, 72, 54),
+        new Rect(216, 0, 72, 54),
+        new Rect(288, 0, 72, 54),
+        new Rect(360, 0, 72, 54),
+        new Rect(432, 0, 72, 54),
+        new Rect(504, 0, 72, 54),
+        new Rect(576, 0, 72, 54),
+        new Rect(648, 0, 72, 54),
+        new Rect(720, 0, 72, 54),
+        new Rect(792, 0, 72, 54),
+        new Rect(864, 0, 72, 54),
+        new Rect(936, 0, 72, 54),
+        new Rect(1008, 0, 72, 54),
+        new Rect(1080, 0, 72, 54),
+        new Rect(1152, 0, 72, 54),
+        new Rect(1224, 0, 72, 54),
+        new Rect(1296, 0, 72, 54),
+        new Rect(1368, 0, 72, 54)
+      ]
+    },
+    "fish_right" : {
+    fps: 16,
+    maxLoopCount: -1, //-1 = always, 0 = run once, N = run N times
+    startCellIndex: 0,
+    endCellIndex: 19,
+    boundingBoxDimensions: new Vector2(72, 54), 
+    cellData: [
+      new Rect(0, 54, 72, 54),
+      new Rect(72, 54, 72, 54),
+      new Rect(144, 54, 72, 54),
+      new Rect(216, 54, 72, 54),
+      new Rect(288, 54, 72, 54),
+      new Rect(360, 54, 72, 54),
+      new Rect(432, 54, 72, 54),
+      new Rect(504, 54, 72, 54),
+      new Rect(576, 54, 72, 54),
+      new Rect(648, 54, 72, 54),
+      new Rect(720, 54, 72, 54),
+      new Rect(792, 54, 72, 54),
+      new Rect(864, 54, 72, 54),
+      new Rect(936, 54, 72, 54),
+      new Rect(1008, 54, 72, 54),
+      new Rect(1080, 54, 72, 54),
+      new Rect(1152, 54, 72, 54),
+      new Rect(1224, 54, 72, 54),
+      new Rect(1296, 54, 72, 54),
+      new Rect(1368, 54, 72, 54)
+    ]
+  }
+  }
+});
 
 
 static COLLECTIBLES_ANIMATION_DATA = Object.freeze({
@@ -188,9 +237,12 @@ static PLATFORM_DATA = Object.freeze({
 
 
     //Second jump
+    new Vector2(550, 400),
+    new Vector2(500, 400),
     new Vector2(450, 400),
     new Vector2(400, 400),
     new Vector2(350, 400),
+    new Vector2(300, 400),
 
 
     //Connected to left wall

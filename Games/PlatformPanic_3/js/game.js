@@ -177,6 +177,7 @@ function StartGame(gameTime) {
 
   //play sound
   soundManager.Play("background");
+  // console.log("music playing");
 }
 
 function LoadSprites() {

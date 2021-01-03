@@ -201,10 +201,9 @@ class PlayerController {
 
         //we can use simple collision check here (i.e. Intersects) because dont need to think was it top, bottom, left, or right
         if (Collision.Intersects(parent, sprite)) {
-          //add your code here...
 
           //add to the score
-          score += 10; //SCORE ONLY ADDED WHEN ENTER PRESSED
+          score += 10; 
 
           //play a sound
           soundManager.Play("coin_pickup");
@@ -229,13 +228,18 @@ class PlayerController {
    */
   HandleEnemyCollision(parent) {
     let sprites = objectManager.Find(ActorType.Enemy);
-
     if (sprites) {
       for (let i = 0; i < sprites.length; i++) {
         let sprite = sprites[i];
 
         if (Collision.Intersects(parent, sprite)) {
-          //add your code here...
+
+          hitCooldown += 1;
+          console.log(hitCooldown);
+
+          if((hitCooldown % 25) == 0) {
+            health = health - 1;
+          }
         }
       }
     }
