@@ -235,7 +235,7 @@ class PlayerController {
         if (Collision.Intersects(parent, sprite)) {
 
           hitCooldown += 1;
-          console.log(hitCooldown);
+          //console.log(hitCooldown);
 
           if((hitCooldown % 25) == 0) {
             health = health - 1;

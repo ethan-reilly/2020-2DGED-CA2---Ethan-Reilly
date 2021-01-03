@@ -80,6 +80,8 @@ function LoadManagers() {
 
 //#region Update, Draw & Clear
 function Update(gameTime) {
+  if(!gameEnded)
+  {
   //call object manager to update all sprites
   objectManager.Update(gameTime);
 
@@ -88,9 +90,12 @@ function Update(gameTime) {
 
   //update scores on the UI
   UpdateGameState(gameTime);
+  }
 }
 
 function Draw(gameTime) {
+  if(gameStarted)
+  {
   //if we add a pattern or animate the canvas then we shouldnt clear the background
   ClearCanvas(Color.White);
 
@@ -98,6 +103,25 @@ function Draw(gameTime) {
   objectManager.Draw(gameTime);
 
   if (debugDrawer) debugDrawer.Draw(gameTime);
+}
+else
+{
+  CanvasGradient("red", "purple");
+  //CanvasGradient("gold", "blue");
+}
+
+}
+
+//https://www.w3schools.com/html/html5_canvas.asp
+function CanvasGradient(color1, color2)
+{
+  var grd = ctx.createLinearGradient(0, 0, 750, 0);
+  grd.addColorStop(0, color1);
+  grd.addColorStop(1, color2);
+
+  // Fill with gradient
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, 1024, 768);
 }
 
 function ClearCanvas(color) {
@@ -127,6 +151,7 @@ const cueArray = [
 var health = 100;
 var hitCooldown = 0;
 var score = 0;
+var gameStarted = false;
 var gameEnded = false;
 //#endregion
 
@@ -144,13 +169,13 @@ function UpdateGameState(gameTime) {
   {
     //update UI with new score
     var scoreElement = document.getElementById("ui_score");
-    if (scoreElement) {
+    if (scoreElement && gameStarted) {
       scoreElement.style.display = "block";
       scoreElement.innerHTML = "Score: " + score;
     }
 
     var healthElement = document.getElementById("ui_health");
-    if (healthElement) {
+    if (healthElement && gameStarted) {
       healthElement.style.display = "block";
       healthElement.innerHTML = "Health: " + health;
     }
@@ -163,6 +188,7 @@ function UpdateGameState(gameTime) {
     message.style.display = "block";
 
     gameEnded = true;
+    //gameStarted = false;
   }
 
   if (health <= 0 ){
@@ -221,6 +247,8 @@ function StartGame(gameTime){
 
   //play sound
   soundManager.Play("background");
+
+  gameStarted = true;
 }
 
 function LoadSprites() {
@@ -465,7 +493,7 @@ function LoadEnemySprites() {
   //step 7 - add movement controller
   // enemySprite.AttachController(
   //   new EnemyController(
-  //    
+     
   //   )
   // );
 

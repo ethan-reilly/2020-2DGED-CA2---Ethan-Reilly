@@ -29,17 +29,17 @@ class EnemyController
       
       // parent.Transform2D.RotateBy(GDMath.ToRadians(30));
 
-//if left or right key pressed and player is on the ground then add/remove move velocity
-if (keyboardManager.IsKeyDown(this.moveKeys[0])) {
-    parent.Body.AddVelocityX(-this.runVelocity * gameTime.ElapsedTimeInMs);
-    //add your code here...
-    parent.Artist.SetTake("fish_left");
-  } else if (keyboardManager.IsKeyDown(this.moveKeys[1])) {
-    parent.Body.AddVelocityX(this.runVelocity * gameTime.ElapsedTimeInMs);
-    //add your code here...
-    parent.Artist.SetTake("fish_right");
-  }
-            //NEED TO WORK ON HERE
+//get to a certain point and then turn around    Unsure how to do
+// if () {
+//     parent.Body.AddVelocityX(-this.runVelocity * gameTime.ElapsedTimeInMs);
+//     //add your code here...
+//     parent.Artist.SetTake("fish_left");
+//   } else if (keyboardManager.IsKeyDown(this.moveKeys[1])) {
+//     parent.Body.AddVelocityX(this.runVelocity * gameTime.ElapsedTimeInMs);
+//     //add your code here...
+//     parent.Artist.SetTake("fish_right");
+//   }
+
 
     }
 

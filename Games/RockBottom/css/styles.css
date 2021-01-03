@@ -58,7 +58,7 @@ svg{
   letter-spacing: 1px;
   font-size: 50px;
   color:rgb(255, 255, 255);
-  text-shadow: 3px 1px rgb(255, 0, 0);
+  text-shadow: 3px 1px rgb(0, 0, 0);
   text-align: center;
   z-index: 2;
 }
@@ -79,13 +79,13 @@ svg{
 #ui_score{
   font-size: 30px;
   top:50px;
-  right:50px;
+  left:720px;
 }
 
 #ui_health{
   font-size: 30px;
   top:10px;
-  right:50px;
+  left:720px;
 }
 
 #menu_opening{
