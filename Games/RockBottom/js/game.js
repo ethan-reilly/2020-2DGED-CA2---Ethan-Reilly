@@ -106,7 +106,7 @@ function Draw(gameTime) {
 }
 else
 {
-  CanvasGradient("red", "purple");
+  CanvasGradient("blue", "purple");
   //CanvasGradient("gold", "blue");
 }
 
